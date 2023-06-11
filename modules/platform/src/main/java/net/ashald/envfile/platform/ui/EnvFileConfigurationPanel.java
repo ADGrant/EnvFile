@@ -56,7 +56,6 @@ class EnvFileConfigurationPanel<T extends RunConfigurationBase<?>> extends JPane
     private final JCheckBox substituteEnvVarsCheckBox;
     private final JCheckBox supportPathMacroCheckBox;
     private final JCheckBox ignoreMissingCheckBox;
-    private final JCheckBox experimentalIntegrationsCheckBox;
     private final ListTableModel<EnvFileEntry> envFilesModel;
     private final TableView<EnvFileEntry> envFilesTable;
 
@@ -95,13 +94,11 @@ class EnvFileConfigurationPanel<T extends RunConfigurationBase<?>> extends JPane
                 substituteEnvVarsCheckBox.setEnabled(useEnvFileCheckBox.isSelected());
                 supportPathMacroCheckBox.setEnabled(useEnvFileCheckBox.isSelected());
                 ignoreMissingCheckBox.setEnabled(useEnvFileCheckBox.isSelected());
-                experimentalIntegrationsCheckBox.setEnabled(useEnvFileCheckBox.isSelected());
             }
         });
         substituteEnvVarsCheckBox = new JCheckBox("Substitute Environment Variables (${FOO} / ${BAR:-default} / $${ESCAPED})");
         supportPathMacroCheckBox = new JCheckBox("Process JetBrains path macro references ($PROJECT_DIR$)");
         ignoreMissingCheckBox = new JCheckBox("Ignore missing files");
-        experimentalIntegrationsCheckBox = new JCheckBox("Enable experimental integrations (e.g. Gradle) - may break any time!");
 
         // TODO: come up with a generic approach for this
         envFilesModel.addRow(
@@ -145,7 +142,6 @@ class EnvFileConfigurationPanel<T extends RunConfigurationBase<?>> extends JPane
         optionsPanel.add(substituteEnvVarsCheckBox);
         optionsPanel.add(supportPathMacroCheckBox);
         optionsPanel.add(ignoreMissingCheckBox);
-        optionsPanel.add(experimentalIntegrationsCheckBox);
 
         // Compose UI
         JPanel checkboxPanel = new JPanel();
@@ -283,7 +279,6 @@ class EnvFileConfigurationPanel<T extends RunConfigurationBase<?>> extends JPane
                 .envVarsSubstitutionEnabled(substituteEnvVarsCheckBox.isSelected())
                 .pathMacroSupported(supportPathMacroCheckBox.isSelected())
                 .ignoreMissing(ignoreMissingCheckBox.isSelected())
-                .enableExperimentalIntegrations(experimentalIntegrationsCheckBox.isSelected())
                 .entries(envFilesModel.getItems())
                 .build();
     }
@@ -293,13 +288,11 @@ class EnvFileConfigurationPanel<T extends RunConfigurationBase<?>> extends JPane
         substituteEnvVarsCheckBox.setSelected(state.isSubstituteEnvVarsEnabled());
         supportPathMacroCheckBox.setSelected(state.isPathMacroSupported());
         ignoreMissingCheckBox.setSelected(state.isIgnoreMissing());
-        experimentalIntegrationsCheckBox.setSelected(state.isEnableExperimentalIntegrations());
 
         envFilesTable.setEnabled(state.isPluginEnabledEnabled());
         substituteEnvVarsCheckBox.setEnabled(state.isPluginEnabledEnabled());
         supportPathMacroCheckBox.setEnabled(state.isPluginEnabledEnabled());
         ignoreMissingCheckBox.setEnabled(state.isPluginEnabledEnabled());
-        experimentalIntegrationsCheckBox.setEnabled(state.isPluginEnabledEnabled());
 
         envFilesModel.setItems(new ArrayList<>(state.getEntries()));
     }
